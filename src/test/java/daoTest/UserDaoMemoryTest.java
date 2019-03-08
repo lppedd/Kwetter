@@ -61,4 +61,17 @@ public class UserDaoMemoryTest {
         User found = dao.getById(mike.getId());
         assertNull(found); // test delete of existing user
     }
+
+    @Test
+    public void updateTest() {
+        User paul = dao.create(new User("Paul", "Friesland", "http://paul.nl", "Paulus", UserType.REGULAR));
+
+        User newPaul = new User("Paul", "Friesland", "http://paul.nl", "Betere bio", UserType.REGULAR);
+        newPaul.setId(paul.getId());
+
+        dao.update(newPaul);
+
+        User updatedPaul = dao.getById(newPaul.getId());
+        assertEquals(updatedPaul.getBio(), "Betere bio"); // test delete of existing user
+    }
 }

@@ -14,6 +14,7 @@ public class Tweet {
 
     private String content;
     private Date date;
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -27,9 +28,10 @@ public class Tweet {
 
     }
 
-    public Tweet(String content) {
+    public Tweet(String content, User user) {
         this.content = content;
         this.date = new Date();
+        this.user = user;
         this.likes = new ArrayList<>();
     }
 
@@ -55,6 +57,14 @@ public class Tweet {
 
     public Date getDate() {
         return this.date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<User> getLikes() {

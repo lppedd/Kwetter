@@ -25,9 +25,9 @@ public class KwetterApp {
             User levi = new User("Levi", "Eindhoven", "http://levi.nl", "Hallo, ik ben Levi!", UserType.REGULAR);
             User nick = new User("Nick", "Helmond", "http://nick.nl", "Hallo, ik ben Nick!", UserType.REGULAR);
 
-            Tweet tweet = new Tweet("eten...");
-            Tweet tweet1 = new Tweet("zwemmen...");
-            Tweet tweet2 = new Tweet("voetballen...");
+            Tweet tweet = new Tweet("eten...", bas);
+            Tweet tweet1 = new Tweet("zwemmen...", bas);
+            Tweet tweet2 = new Tweet("voetballen...", bas);
 
             bas.addTweet(tweet);
             bas.addTweet(tweet1);

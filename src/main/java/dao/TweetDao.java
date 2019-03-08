@@ -11,7 +11,11 @@ public interface TweetDao {
 
     List<Tweet> getAll();
 
+    List<Tweet> findByContent(String content);
+
     Tweet create(Tweet tweet);
+
+    Tweet update(Tweet tweet);
 
     void delete(Tweet tweet);
 }

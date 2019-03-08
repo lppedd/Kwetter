@@ -27,7 +27,7 @@ public class DomainTest {
 
             for (int j = 0; j < users.size(); j++) {
                 User usr = users.get(j);
-                Tweet tweet = new Tweet("content" + j);
+                Tweet tweet = new Tweet("content" + j, user);
 
                 if (i != j) {
                     user.addTweet(tweet);
@@ -75,7 +75,7 @@ public class DomainTest {
     public void TweetTest() {
         // Test object creation
         User mike = new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
-        Tweet tweet = new Tweet("Test");
+        Tweet tweet = new Tweet("Test", mike);
 
         // Test amount of tweets initialized
         User user = users.get(0);

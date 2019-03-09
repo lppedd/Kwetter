@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.UserDao;
+import exception.UserException;
 import models.User;
 
 import javax.enterprise.context.RequestScoped;
@@ -33,12 +34,23 @@ public class UserDaoMemory implements UserDao {
     }
 
     @Override
+    public User getByEmail(String email) {
+        for(User user : users) {
+            if(user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<User> getAll() {
         return users;
     }
 
     @Override
-    public User create(User user) {
+    public User create(User user) throws UserException {
+        validateCreate(user);
         user.setId(getIncrementId());
         users.add(user);
         return user;
@@ -62,17 +74,36 @@ public class UserDaoMemory implements UserDao {
     }
 
     @Override
+    public User updateUserType(User user) {
+        for(User u : users) {
+            if(u.getId() == user.getId()) {
+                u.setUserType(user.getUserType());
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void delete(User user) {
         users.remove(user);
     }
 
     @Override
     public void addFollower(User user, User follower) {
-        int indexOf = this.users.indexOf(user);
-        users.get(indexOf).addFollower(follower);
+        int indexOfUser = this.users.indexOf(user);
+        int indexOfFollower = this.users.indexOf(follower);
+
+        users.get(indexOfUser).addFollower(follower);
+        users.get(indexOfFollower).addFollowing(user);
 
     }
 
+    private void validateCreate(User user) throws UserException {
+        if(user.getName().length() > 20 || user.getName().length() < 0 || user.getName().isEmpty()) {
+            throw new UserException("Username has an invalid length");
+        }
+    }
 
     private int getIncrementId() {
         idIncrement++;

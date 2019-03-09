@@ -18,7 +18,7 @@ public class DomainTest {
     public void setUp() { // populate testset so it is representative
 
         for (int i = 0; i < 10; i++) {
-            User user = new User("User" + i, "Location" + i, "website" + i, "bio" + i, UserType.REGULAR);
+            User user = new User("User" + i, i +"@live.nl", "Location" + i, "website" + i, "bio" + i, UserType.REGULAR);
             users.add(user);
         }
 
@@ -44,8 +44,8 @@ public class DomainTest {
     @Test
     public void userTest() {
         // Test object creation
-        User mike = new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
-        User pim = new User("Pim", "Eindhoven", "http://pim.nl", "Just living life", UserType.REGULAR);
+        User mike = new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
+        User pim = new User("Pim", "pim@live.nl", "Eindhoven", "http://pim.nl", "Just living life", UserType.REGULAR);
 
         // Testing populating of users list (10 are populated before each test run)
         users.add(mike);
@@ -74,7 +74,7 @@ public class DomainTest {
     @Test
     public void TweetTest() {
         // Test object creation
-        User mike = new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
+        User mike = new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
         Tweet tweet = new Tweet("Test", mike);
 
         // Test amount of tweets initialized

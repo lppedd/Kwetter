@@ -21,9 +21,9 @@ public class KwetterApp {
     @PostConstruct
     public void init(){
         try{
-            User bas = new User("Henk", "Valkenburg", "http://henk.nl", "Hallo, ik ben Henk!", UserType.REGULAR);
-            User levi = new User("Levi", "Eindhoven", "http://levi.nl", "Hallo, ik ben Levi!", UserType.REGULAR);
-            User nick = new User("Nick", "Helmond", "http://nick.nl", "Hallo, ik ben Nick!", UserType.REGULAR);
+            User bas = new User("Henk", "henk@live.nl", "Valkenburg", "http://henk.nl", "Hallo, ik ben Henk!", UserType.REGULAR);
+            User levi = new User("Levi", "levi@live.nl", "Eindhoven", "http://levi.nl", "Hallo, ik ben Levi!", UserType.REGULAR);
+            User nick = new User("Nick", "nick@live.nl", "Helmond", "http://nick.nl", "Hallo, ik ben Nick!", UserType.REGULAR);
 
             Tweet tweet = new Tweet("eten...", bas);
             Tweet tweet1 = new Tweet("zwemmen...", bas);

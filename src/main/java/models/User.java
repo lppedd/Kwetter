@@ -12,6 +12,7 @@ public class User {
     private int id;
 
     private String name;
+    private String email;
     private String location;
     private String web;
     private String bio;
@@ -45,8 +46,9 @@ public class User {
 
     }
 
-    public User(String name, String location, String web, String bio, UserType userType) {
+    public User(String name, String email, String location, String web, String bio, UserType userType) {
         this.name = name;
+        this.email = email;
         this.location = location;
         this.web = web;
         this.bio = bio;
@@ -87,6 +89,15 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     public String getLocation() {
         return location;

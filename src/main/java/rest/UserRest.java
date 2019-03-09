@@ -1,5 +1,6 @@
 package rest;
 
+import exception.UserException;
 import models.User;
 import models.UserType;
 import service.UserService;
@@ -20,8 +21,8 @@ public class UserRest {
 
     @GET
     @Produces({"application/json"})
-    public List<User> get() {
-        userService.create(new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
+    public List<User> get() throws UserException {
+        userService.create(new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
         return userService.getAll();
     }
 }

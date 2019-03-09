@@ -20,8 +20,8 @@ public class TweetDaoMemoryTest {
     private User user;
 
     @Before
-    public void setUp() {
-        user = new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
+    public void setUp() throws Exception {
+        user = new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
         userDao.create(user);
     }
 

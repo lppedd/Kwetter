@@ -1,6 +1,7 @@
 package daoTest;
 
 import dao.impl.UserDaoMemory;
+import exception.UserException;
 import models.User;
 import models.UserType;
 import org.junit.Test;
@@ -15,10 +16,10 @@ public class UserDaoMemoryTest {
     private UserDaoMemory dao = new UserDaoMemory();
 
     @Test
-    public void getAllTest() {
+    public void getAllTest() throws Exception {
         // String name, String location, String web, String bio, UserType userType)
-        User mike = new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
-        User pim = new User("Pim", "Eindhoven", "http://pim.nl", "Just living life", UserType.REGULAR);
+        User mike = new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
+        User pim = new User("Pim", "pim@live.nl", "Eindhoven", "http://pim.nl", "Just living life", UserType.REGULAR);
 
         List<User> users = new ArrayList<>();
         users.add(mike);
@@ -34,8 +35,8 @@ public class UserDaoMemoryTest {
     }
 
     @Test
-    public void getByNameTest() {
-        User mike = dao.create(new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
+    public void getByNameTest() throws Exception {
+        User mike = dao.create(new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
         User found = dao.getByName("Mike");
         assertEquals(mike, found); // test existing name
 
@@ -44,8 +45,8 @@ public class UserDaoMemoryTest {
     }
 
     @Test
-    public void getByIdTest() {
-        User mike = dao.create(new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
+    public void getByIdTest() throws Exception {
+        User mike = dao.create(new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
         User found = dao.getById(mike.getId());
         assertEquals(mike, found); // test existing name
 
@@ -54,8 +55,8 @@ public class UserDaoMemoryTest {
     }
 
     @Test
-    public void deleteTest() {
-        User mike = dao.create(new User("Mike", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
+    public void deleteTest() throws Exception {
+        User mike = dao.create(new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
         dao.delete(mike);
 
         User found = dao.getById(mike.getId());
@@ -63,10 +64,10 @@ public class UserDaoMemoryTest {
     }
 
     @Test
-    public void updateTest() {
-        User paul = dao.create(new User("Paul", "Friesland", "http://paul.nl", "Paulus", UserType.REGULAR));
+    public void updateTest() throws Exception {
+        User paul = dao.create(new User("Paul", "mike@live.nl", "Friesland", "http://paul.nl", "Paulus", UserType.REGULAR));
 
-        User newPaul = new User("Paul", "Friesland", "http://paul.nl", "Betere bio", UserType.REGULAR);
+        User newPaul = new User("Paul", "paul@live.nl", "Friesland", "http://paul.nl", "Betere bio", UserType.REGULAR);
         newPaul.setId(paul.getId());
 
         dao.update(newPaul);

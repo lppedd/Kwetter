@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     providedCompile("javax:javaee-api:8.0@jar") // Java EE API
+    testCompile("org.mockito:mockito-core:2.+")
     testCompile("junit", "junit", "4.12")
 }
 

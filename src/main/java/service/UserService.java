@@ -1,6 +1,7 @@
 package service;
 
 import dao.UserDao;
+import exception.UserException;
 import models.User;
 
 import javax.enterprise.context.RequestScoped;
@@ -16,7 +17,8 @@ public class UserService {
         super();
     }
 
-    public User create(User user) {
+    public User create(User user) throws UserException {
+        User u = dao.getByName(user.getName());
         if(dao.getByName(user.getName()) == null) {
             return dao.create(user);
         }

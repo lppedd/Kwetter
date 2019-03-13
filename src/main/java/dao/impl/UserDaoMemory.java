@@ -7,10 +7,11 @@ import models.User;
 import javax.enterprise.context.RequestScoped;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @RequestScoped
 public class UserDaoMemory implements UserDao {
-    private List<User> users = new ArrayList<>();
+    private List<User> users = new CopyOnWriteArrayList<>();
     private int idIncrement = 0;
 
     @Override

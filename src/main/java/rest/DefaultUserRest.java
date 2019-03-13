@@ -17,7 +17,7 @@ import java.util.List;
 @RequestScoped
 @Path("/user")
 public class DefaultUserRest {
-    private KwetterAppl kwetterApp;
+    private KwetterAppl kwetterApp; // test
     private UserService userService;
 
     protected DefaultUserRest() {

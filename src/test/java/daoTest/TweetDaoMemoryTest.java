@@ -1,17 +1,19 @@
 package daoTest;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import dao.impl.TweetDaoMemory;
 import dao.impl.UserDaoMemory;
 import models.Tweet;
 import models.User;
 import models.UserType;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class TweetDaoMemoryTest {
     private TweetDaoMemory dao = new TweetDaoMemory();
@@ -53,15 +55,16 @@ public class TweetDaoMemoryTest {
     @Test
     public void findByIdTest() {
         //Case 1 - Find an existing tweet by id
-        Tweet tweet = new Tweet("Hello world!", user);
-        Tweet createdTweet = dao.create(tweet);
+        final Tweet tweet = new Tweet("Hello world!", user);
+        final Tweet createdTweet = dao.create(tweet);
 
-        Tweet tweetFound = dao.findById(createdTweet.getId());
-        assertEquals(createdTweet, tweetFound);
+        final Optional<Tweet> tweetFound = dao.findById(createdTweet.getId());
+        assertTrue(tweetFound.isPresent());
+        assertEquals(createdTweet, tweetFound.get());
 
         //Case 2 - Find a not existing tweet by id
-        Tweet tweet2Found = dao.findById(createdTweet.getId()+1);
-        assertNull(tweet2Found);
+        final Optional<Tweet> tweet2Found = dao.findById(createdTweet.getId() + 1);
+        assertFalse(tweet2Found.isPresent());
     }
 
     @Test

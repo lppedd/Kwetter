@@ -1,7 +1,9 @@
 package exception;
 
 public class UserException extends Exception {
-    public UserException(String message) {
+    private static final long serialVersionUID = 1L;
+
+    public UserException(final String message) {
         super(message);
     }
 }

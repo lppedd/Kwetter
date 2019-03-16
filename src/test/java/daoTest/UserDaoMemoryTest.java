@@ -1,78 +1,127 @@
 package daoTest;
 
-import dao.impl.UserDaoMemory;
-import exception.UserException;
-import models.User;
-import models.UserType;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.Test;
+
+import dao.UserDao;
+import dao.impl.UserDaoMemory;
+import models.User;
+import models.UserType;
 
 public class UserDaoMemoryTest {
-    private UserDaoMemory dao = new UserDaoMemory();
+    private final UserDao dao = new UserDaoMemory();
 
     @Test
     public void getAllTest() throws Exception {
         // String name, String location, String web, String bio, UserType userType)
-        User mike = new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
-        User pim = new User("Pim", "pim@live.nl", "Eindhoven", "http://pim.nl", "Just living life", UserType.REGULAR);
+        final User mike = new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR);
+        final User pim = new User("Pim", "pim@live.nl", "Eindhoven", "http://pim.nl", "Just living life", UserType.REGULAR);
 
-        List<User> users = new ArrayList<>();
+        final Collection<User> users = new ArrayList<>();
         users.add(mike);
         users.add(pim);
 
         dao.create(mike);
         dao.create(pim);
 
-        List<User> daoUsers = dao.getAll();
+        final Collection<User> daoUsers = dao.getAll();
 
         assertEquals(users.size(), daoUsers.size()); // test equal amount of users
-        assertEquals(true, daoUsers.containsAll(users)); // test if list really contains created users
+        assertTrue(daoUsers.containsAll(users)); // test if list really contains created users
     }
 
     @Test
     public void getByNameTest() throws Exception {
-        User mike = dao.create(new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
-        User found = dao.getByName("Mike");
-        assertEquals(mike, found); // test existing name
+        final User mike =
+                dao.create(new User(
+                        "Mike",
+                        "mike@live.nl",
+                        "Helmond",
+                        "http://mike.nl",
+                        "Just living life",
+                        UserType.REGULAR)
+                );
 
-        User notFound = dao.getByName("Bestaat niet"); // test not existing name
-        assertNull(notFound);
+        final Optional<User> found = dao.getByName("Mike");
+
+        assertTrue(found.isPresent());
+        assertEquals(mike, found.get()); // test existing name
+
+        final Optional<User> notFound = dao.getByName("Bestaat niet"); // test not existing name
+        assertFalse(notFound.isPresent());
     }
 
     @Test
     public void getByIdTest() throws Exception {
-        User mike = dao.create(new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
-        User found = dao.getById(mike.getId());
-        assertEquals(mike, found); // test existing name
+        final User mike =
+                dao.create(new User(
+                        "Mike",
+                        "mike@live.nl",
+                        "Helmond",
+                        "http://mike.nl",
+                        "Just living life",
+                        UserType.REGULAR)
+                );
 
-        User notFound = dao.getById(mike.getId() + 1234); // test not existing name
-        assertNull(notFound);
+        final Optional<User> found = dao.getById(mike.getId());
+        assertTrue(found.isPresent());
+        assertEquals(mike, found.get()); // test existing name
+
+        final Optional<User> notFound = dao.getById(mike.getId() + 1234); // test not existing name
+        assertFalse(notFound.isPresent());
     }
 
     @Test
     public void deleteTest() throws Exception {
-        User mike = dao.create(new User("Mike", "mike@live.nl", "Helmond", "http://mike.nl", "Just living life", UserType.REGULAR));
+        final User mike =
+                dao.create(new User(
+                        "Mike",
+                        "mike@live.nl",
+                        "Helmond",
+                        "http://mike.nl",
+                        "Just living life",
+                        UserType.REGULAR)
+                );
+
         dao.delete(mike);
 
-        User found = dao.getById(mike.getId());
-        assertNull(found); // test delete of existing user
+        final Optional<User> found = dao.getById(mike.getId());
+        assertFalse(found.isPresent()); // test delete of existing user
     }
 
     @Test
     public void updateTest() throws Exception {
-        User paul = dao.create(new User("Paul", "mike@live.nl", "Friesland", "http://paul.nl", "Paulus", UserType.REGULAR));
-
-        User newPaul = new User("Paul", "paul@live.nl", "Friesland", "http://paul.nl", "Betere bio", UserType.REGULAR);
+        final User paul =
+                dao.create(new User(
+                        "Paul",
+                        "mike@live.nl",
+                        "Friesland",
+                        "http://paul.nl",
+                        "Paulus",
+                        UserType.REGULAR)
+                );
+        final User newPaul =
+                new User(
+                        "Paul",
+                        "paul@live.nl",
+                        "Friesland",
+                        "http://paul.nl",
+                        "Betere bio",
+                        UserType.REGULAR
+                );
         newPaul.setId(paul.getId());
 
         dao.update(newPaul);
 
-        User updatedPaul = dao.getById(newPaul.getId());
-        assertEquals(updatedPaul.getBio(), "Betere bio"); // test delete of existing user
+        final Optional<User> updatedPaul = dao.getById(newPaul.getId());
+        assertTrue(updatedPaul.isPresent());
+        assertEquals(updatedPaul.get().getBio(), "Betere bio"); // test delete of existing user
     }
 }

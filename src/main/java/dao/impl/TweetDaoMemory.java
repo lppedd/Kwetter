@@ -1,86 +1,98 @@
 package dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import javax.inject.Singleton;
+
+import org.jetbrains.annotations.NotNull;
+
 import dao.TweetDao;
 import models.Tweet;
 import models.User;
 
-import javax.enterprise.context.RequestScoped;
-import java.util.ArrayList;
-import java.util.List;
-
-@RequestScoped
+@Singleton
 public class TweetDaoMemory implements TweetDao {
-    private List<Tweet> tweets = new ArrayList<>();
-    private int idIncrement = 0;
+    private final AtomicInteger idIncrement = new AtomicInteger(0);
+    private final List<Tweet> tweets = new CopyOnWriteArrayList<>();
 
+    @NotNull
     @Override
-    public Tweet findById(int id) {
-        for(Tweet tweet : tweets) {
-            if(tweet.getId() == id) {
-                return tweet;
-            }
-        }
-        return null;
+    public Optional<Tweet> findById(final int id) {
+        return tweets.stream()
+                     .filter(byId(id))
+                     .findFirst();
     }
 
+    @NotNull
     @Override
-    public List<Tweet> findByUser(int id) {
-        List<Tweet> tweetsFound = new ArrayList<>();
-
-        for(Tweet tweet : tweets) {
-            if(tweet.getUser().getId() == id) {
-                tweetsFound.add(tweet);
-            }
-        }
-        return tweetsFound;
+    public List<Tweet> findByUser(final int id) {
+        return tweets.stream()
+                     .filter(tweet -> {
+                         final User user = tweet.getUser();
+                         return user != null && user.getId() == id;
+                     }).collect(Collectors.toList());
     }
 
+    @NotNull
     @Override
     public List<Tweet> getAll() {
-        return tweets;
+        // Defensive copy to avoid state mutation
+        return new ArrayList<>(tweets);
+    }
+
+    @NotNull
+    @Override
+    public List<Tweet> findByContent(final String content) {
+        return tweets.stream()
+                     .filter(tweet -> {
+                         final String tc = tweet.getContent();
+                         return tc != null && tc.contains(content);
+                     }).collect(Collectors.toList());
     }
 
     @Override
-    public List<Tweet> findByContent(String content) {
-        List<Tweet> tweetsFound = new ArrayList<>();
+    public Tweet create(final Tweet tweet) {
+        final String content = tweet.getContent();
 
-        for(Tweet tweet : tweets) {
-            if(tweet.getContent().contains(content)) {
-                tweetsFound.add(tweet);
-            }
-        }
-        return tweetsFound;
-    }
-
-    @Override
-    public Tweet create(Tweet tweet) {
-        if(!tweet.getContent().isEmpty()) {
-            if(tweet.getContent().length() < 141) {
+        if (content != null && !content.isEmpty()) {
+            if (content.length() < 141) {
                 tweet.setId(getIncrementId());
                 tweets.add(tweet);
                 return tweet;
             }
         }
+
         return null;
     }
 
     @Override
-    public Tweet update(Tweet tweet) {
-        for(Tweet kweet : tweets) {
-            if(kweet.getId() == tweet.getId()) {
+    public Tweet update(final Tweet tweet) {
+        for (Tweet kweet : tweets) {
+            if (kweet.getId() == tweet.getId()) {
+                // FIXME invalid!
                 kweet = tweet;
             }
         }
+
         return null;
     }
 
     @Override
-    public void delete(Tweet tweet) {
+    public void delete(final Tweet tweet) {
         tweets.remove(tweet);
     }
 
     private int getIncrementId() {
-        idIncrement++;
-        return idIncrement;
+        return idIncrement.incrementAndGet();
+    }
+
+    private static Predicate<Tweet> byId(final int id) {
+        return tweet -> tweet.getId() == id;
     }
 }

@@ -1,21 +1,31 @@
 package dao;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import models.Tweet;
 
-import java.util.List;
-
 public interface TweetDao {
-    Tweet findById(int id);
+    @NotNull
+    Optional<Tweet> findById(final int id);
 
-    List<Tweet> findByUser(int id);
+    @NotNull
+    List<Tweet> findByUser(final int id);
 
+    @NotNull
     List<Tweet> getAll();
 
-    List<Tweet> findByContent(String content);
+    @NotNull
+    List<Tweet> findByContent(final String content);
 
-    Tweet create(Tweet tweet);
+    @Nullable
+    Tweet create(final Tweet tweet);
 
-    Tweet update(Tweet tweet);
+    @Nullable
+    Tweet update(final Tweet tweet);
 
-    void delete(Tweet tweet);
+    void delete(final Tweet tweet);
 }

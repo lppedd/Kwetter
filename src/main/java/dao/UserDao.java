@@ -1,26 +1,40 @@
 package dao;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import exception.UserException;
 import models.User;
 
-import java.util.List;
-
 public interface UserDao {
-    User getById(int id);
+    @NotNull
+    Optional<User> getById(final int id);
 
-    User getByName(String name);
+    @NotNull
+    Optional<User> getByName(final String name);
 
-    User getByEmail(String email);
+    @NotNull
+    Optional<User> getByEmail(final String email);
 
+    @NotNull
     List<User> getAll();
 
-    User create(User user) throws UserException;
+    @Nullable
+    User create(final User user) throws UserException;
 
-    User update(User user);
+    @Nullable
+    User update(final User user);
 
-    User updateUserType(User user);
+    @Nullable
+    User updateUserType(final User user);
 
-    void delete(User user);
+    void delete(final User user);
 
-    void addFollower(User user, User follower);
+    void addFollower(
+            final User user,
+            final User follower
+    );
 }
